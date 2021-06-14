@@ -1,8 +1,10 @@
 import './App.css';
 import React, { Component } from 'react';
 import Container from 'react-bootstrap/Container'
+import ListGroup from 'react-bootstrap/ListGroup'
 import Card from 'react-bootstrap/Card'
 import axios from 'axios';
+
 
 class App extends Component
 {
@@ -62,12 +64,20 @@ class App extends Component
     foundZips = () =>
     {
         let isFound = this.state.isFound;
+        let zipsArray = this.state.zips;
         
 
 
         if (isFound)
         {
-            return <h1>Found</h1>
+
+            return (
+                <ListGroup>
+                    { zipsArray.map(zip => <ListGroup.Item>{zip}</ListGroup.Item>) }
+                </ListGroup>
+            )
+                
+
         }
         else
         {
@@ -91,7 +101,7 @@ class App extends Component
                 </form>
 
 
-                <this.found />
+                <this.foundZips />
 
             </Container>
 
