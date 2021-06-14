@@ -59,7 +59,7 @@ class App extends Component
 
     }
 
-    found = () =>
+    foundZips = () =>
     {
         let isFound = this.state.isFound;
         
