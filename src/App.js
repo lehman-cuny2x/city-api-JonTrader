@@ -34,24 +34,7 @@ class App extends Component
             const res = await axios.get(`http://ctp-zip-api.herokuapp.com/city/${city}`)
 
             this.setState({ zips: [...res.data] })
-            console.log(this.state.zips);
-
-            let zipValues = this.state.zips;
-
-            for (let value of zipValues)
-            {
-                try
-                {
-                    const response = await axios.get(`http://ctp-zip-api.herokuapp.com/zip/${value}`)
-                    console.log(response.data);
-                }
-                catch(error)
-                {
-                    console.log(error);
-                }
-
-            }
-
+            
         }
         catch (error)
         {
@@ -65,9 +48,9 @@ class App extends Component
     {
         let isFound = this.state.isFound;
         let zipsArray = this.state.zips;
+
+        this.foundCities();
         
-
-
         if (isFound)
         {
 
@@ -75,6 +58,7 @@ class App extends Component
                 <ListGroup>
                     { zipsArray.map(zip => <ListGroup.Item>{zip}</ListGroup.Item>) }
                 </ListGroup>
+                
             )
                 
 
@@ -83,6 +67,33 @@ class App extends Component
         {
             return <h4>No Results Found</h4>
         }
+    }
+
+    foundCities = async () =>
+    {
+
+        let zipValues = this.state.zips;
+        let citiesValues = [];
+
+        for (let value of zipValues)
+        {
+            try
+            {
+                const response = await axios.get(`http://ctp-zip-api.herokuapp.com/zip/${value}`)
+                console.log(response.data)
+                citiesValues.push(response.data);
+                
+            }
+            catch(error)
+            {
+                console.log(error);
+            }
+
+        }
+
+        
+        // console.log(citiesValues);
+        
     }
 
     render()
@@ -102,6 +113,8 @@ class App extends Component
 
 
                 <this.foundZips />
+                {/* <this.foundCities /> */}
+                
 
             </Container>
 
