@@ -75,6 +75,29 @@ class App extends Component
         }
     }
 
+    render()
+    {
+        return (
+
+            <Container>
+                <div className="text-center top">
+                    <h2>City Search App</h2>
+                </div>
+
+                <form action="" className="text-center" onSubmit={this.results}>
+                    <label htmlFor="">City:</label>
+                    <input type="text" id="city" className="mr-2 ml-2" />
+                    <button>Search</button>
+                </form>
+
+
+                <this.found />
+
+            </Container>
+
+        )
+    }
+
 
 
 
