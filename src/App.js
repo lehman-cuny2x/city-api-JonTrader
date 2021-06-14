@@ -19,6 +19,34 @@ class App extends Component
         }
     }
 
+    results = async (event) =>
+    {
+        event.preventDefault();
+
+        try
+        {
+            this.setState({ isFound: true })
+            const city = document.getElementById("city").value.toUpperCase();
+
+
+            const res = await axios.get(`http://ctp-zip-api.herokuapp.com/city/${city}`)
+
+            this.setState({ zips: [...res.data] })
+            console.log(this.state.zips);
+
+            let zipValues = this.state.zips;
+
+            
+
+        }
+        catch (error)
+        {
+            this.setState({ isFound: false })
+            console.log(error)
+        }
+
+    }
+
     
 }
 
