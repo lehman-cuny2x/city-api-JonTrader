@@ -36,7 +36,19 @@ class App extends Component
 
             let zipValues = this.state.zips;
 
-            
+            for (let value of zipValues)
+            {
+                try
+                {
+                    const response = await axios.get(`http://ctp-zip-api.herokuapp.com/zip/${value}`)
+                    console.log(response.data);
+                }
+                catch(error)
+                {
+                    console.log(error);
+                }
+
+            }
 
         }
         catch (error)
