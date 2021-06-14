@@ -49,7 +49,7 @@ class App extends Component
         let isFound = this.state.isFound;
         let zipsArray = this.state.zips;
 
-        this.foundCities();
+        
         
         if (isFound)
         {
@@ -73,15 +73,15 @@ class App extends Component
     {
 
         let zipValues = this.state.zips;
-        let citiesValues = [];
+        console.log("hello");
 
         for (let value of zipValues)
         {
             try
             {
                 const response = await axios.get(`http://ctp-zip-api.herokuapp.com/zip/${value}`)
-                console.log(response.data)
-                citiesValues.push(response.data);
+                
+                
                 
             }
             catch(error)
@@ -98,6 +98,7 @@ class App extends Component
 
     render()
     {
+
         return (
 
             <Container>
