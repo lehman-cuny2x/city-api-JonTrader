@@ -59,6 +59,25 @@ class App extends Component
 
     }
 
+    found = () =>
+    {
+        let isFound = this.state.isFound;
+        
+
+
+        if (isFound)
+        {
+            return <h1>Found</h1>
+        }
+        else
+        {
+            return <h4>No Results Found</h4>
+        }
+    }
+
+
+
+
     
 }
 
