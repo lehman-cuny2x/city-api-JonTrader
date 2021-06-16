@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import Container from 'react-bootstrap/Container'
 import ListGroup from 'react-bootstrap/ListGroup'
 import Card from 'react-bootstrap/Card'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import axios from 'axios';
 
 
@@ -17,7 +19,8 @@ class App extends Component
         {
             zips: [],
             cities: [],
-            isFound: true
+            isFound: true,
+            citiesFound: false
         }
     }
 
@@ -27,14 +30,32 @@ class App extends Component
 
         try
         {
-            this.setState({ isFound: true })
+
+            
             const city = document.getElementById("city").value.toUpperCase();
 
-
             const res = await axios.get(`http://ctp-zip-api.herokuapp.com/city/${city}`)
+            let citiesValues = [];
 
+            this.setState({ isFound: true })
             this.setState({ zips: [...res.data] })
-            
+
+            try
+            {
+                for (let value of this.state.zips)
+                {
+                    const response = await axios.get(`http://ctp-zip-api.herokuapp.com/zip/${value}`)
+
+                    citiesValues.push(response);
+                }
+
+                this.setState({ cities: citiesValues, citiesFound: true})
+            }
+            catch(error)
+            {
+                console.log(error)
+            }
+
         }
         catch (error)
         {
@@ -46,18 +67,24 @@ class App extends Component
 
     foundZips = () =>
     {
-        let isFound = this.state.isFound;
+        let isFound = this.state.isFound && this.state.citiesFound;
         let zipsArray = this.state.zips;
 
+        
         
         
         if (isFound)
         {
 
             return (
-                <ListGroup>
-                    { zipsArray.map(zip => <ListGroup.Item>{zip}</ListGroup.Item>) }
-                </ListGroup>
+
+                <Row className="justify-content-center">
+                    <Col xs={3}>
+                        <ListGroup>
+                            { zipsArray.map(zip => <ListGroup.Item>{zip}</ListGroup.Item>) }
+                        </ListGroup>
+                    </Col>
+                </Row>
                 
             )
                 
@@ -65,34 +92,46 @@ class App extends Component
         }
         else
         {
-            return <h4>No Results Found</h4>
+            return <h4 className="text-center">No Results Found</h4>
         }
     }
 
-    foundCities = async () =>
+    
+
+    foundCities()
     {
+        
+        let cityFound = this.state.citiesFound;
 
-        let zipValues = this.state.zips;
-        console.log("hello");
-
-        for (let value of zipValues)
+        if (cityFound)
         {
-            try
-            {
-                const response = await axios.get(`http://ctp-zip-api.herokuapp.com/zip/${value}`)
-                
-                
-                
-            }
-            catch(error)
-            {
-                console.log(error);
-            }
-
+            console.log(this.state.cities);
         }
 
+        return <h1>hello</h1>
         
-        // console.log(citiesValues);
+        
+        
+        // if (isFound)
+        // {
+        //     for (let value of zipsArray)
+        //     {
+        //         try
+        //         {
+        //             const res = await axios.get(`http://ctp-zip-api.herokuapp.com/zip/${value}`)
+        //             console.log(res); 
+                    
+        //         }
+        //         catch(error)
+        //         {
+        //             console.log(error);
+                    
+        //         }
+
+        //     }
+        // }
+
+        
         
     }
 
@@ -106,7 +145,7 @@ class App extends Component
                     <h2>City Search App</h2>
                 </div>
 
-                <form action="" className="text-center" onSubmit={this.results}>
+                <form action="" className="text-center mb-5" onSubmit={this.results}>
                     <label htmlFor="">City:</label>
                     <input type="text" id="city" className="mr-2 ml-2" />
                     <button>Search</button>
@@ -114,11 +153,9 @@ class App extends Component
 
 
                 <this.foundZips />
-                {/* <this.foundCities /> */}
+                {/* <this.citiesFound /> */}
                 
-
             </Container>
-
         )
     }
 
